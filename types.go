@@ -19,15 +19,11 @@ func (t Token) IsExpired() bool {
 type Orders []Order
 
 type Order struct {
-	GUID          string      `json:"guid"`
-	EntityType    string      `json:"entityType"`
-	ExternalID    interface{} `json:"externalId"`
-	RevenueCenter struct {
-		GUID       string      `json:"guid"`
-		EntityType string      `json:"entityType"`
-		ExternalID interface{} `json:"externalId"`
-	} `json:"revenueCenter"`
-	Server struct {
+	GUID          string        `json:"guid"`
+	EntityType    string        `json:"entityType"`
+	ExternalID    interface{}   `json:"externalId"`
+	RevenueCenter RevenueCenter `json:"revenueCenter"`
+	Server        struct {
 		GUID       string      `json:"guid"`
 		EntityType string      `json:"entityType"`
 		ExternalID interface{} `json:"externalId"`
@@ -45,18 +41,18 @@ type Order struct {
 		EntityType string      `json:"entityType"`
 		ExternalID interface{} `json:"externalId"`
 	} `json:"restaurantService"`
-	Voided                   bool        `json:"voided"`
-	EstimatedFulfillmentDate DateTime    `json:"estimatedFulfillmentDate"`
-	Table                    interface{} `json:"table"`
-	RequiredPrepTime         string      `json:"requiredPrepTime"`
-	ApprovalStatus           string      `json:"approvalStatus"`
-	DeliveryInfo             interface{} `json:"deliveryInfo"`
-	ServiceArea              interface{} `json:"serviceArea"`
-	CurbsidePickupInfo       interface{} `json:"curbsidePickupInfo"`
-	NumberOfGuests           int         `json:"numberOfGuests"`
-	DiningOption             interface{} `json:"diningOption"`
-	OpenedDate               DateTime    `json:"openedDate"`
-	VoidBusinessDate         Date        `json:"voidBusinessDate"`
+	Voided                   bool         `json:"voided"`
+	EstimatedFulfillmentDate DateTime     `json:"estimatedFulfillmentDate"`
+	Table                    interface{}  `json:"table"`
+	RequiredPrepTime         string       `json:"requiredPrepTime"`
+	ApprovalStatus           string       `json:"approvalStatus"`
+	DeliveryInfo             interface{}  `json:"deliveryInfo"`
+	ServiceArea              interface{}  `json:"serviceArea"`
+	CurbsidePickupInfo       interface{}  `json:"curbsidePickupInfo"`
+	NumberOfGuests           int          `json:"numberOfGuests"`
+	DiningOption             DiningOption `json:"diningOption"`
+	OpenedDate               DateTime     `json:"openedDate"`
+	VoidBusinessDate         Date         `json:"voidBusinessDate"`
 	Checks                   []struct {
 		GUID          string      `json:"guid"`
 		EntityType    string      `json:"entityType"`
@@ -103,7 +99,38 @@ type Order struct {
 			Last4Digits      interface{} `json:"last4Digits"`
 			Refund           interface{} `json:"refund"`
 		} `json:"payments"`
-		AppliedDiscounts   []interface{} `json:"appliedDiscounts"`
+		AppliedDiscounts []struct {
+			AppliedPromoCode interface{} `json:"appliedPromoCode"`
+			Approver         struct {
+				EntityType string      `json:"entityType"`
+				ExternalID interface{} `json:"externalId"`
+				GUID       string      `json:"guid"`
+			} `json:"approver"`
+			ComboItems []interface{} `json:"comboItems"`
+			Discount   struct {
+				EntityType string `json:"entityType"`
+				GUID       string `json:"guid"`
+			} `json:"discount"`
+			DiscountAmount       float64     `json:"discountAmount"`
+			DiscountPercent      float64     `json:"discountPercent"`
+			DiscountType         string      `json:"discountType"`
+			EntityType           string      `json:"entityType"`
+			ExternalID           interface{} `json:"externalId"`
+			GUID                 string      `json:"guid"`
+			LoyaltyDetails       interface{} `json:"loyaltyDetails"`
+			Name                 string      `json:"name"`
+			NonTaxDiscountAmount float64     `json:"nonTaxDiscountAmount"`
+			ProcessingState      interface{} `json:"processingState"`
+			Triggers             []struct {
+				Quantity  float64 `json:"quantity"`
+				Selection struct {
+					EntityType string      `json:"entityType"`
+					ExternalID interface{} `json:"externalId"`
+					GUID       string      `json:"guid"`
+				} `json:"selection"`
+			} `json:"triggers"`
+		} `json:"AppliedDiscounts"`
+
 		LastModifiedDevice struct {
 			ID string `json:"id"`
 		} `json:"lastModifiedDevice"`
@@ -118,29 +145,55 @@ type Order struct {
 		OpenedDate         DateTime    `json:"openedDate"`
 		TotalAmount        float64     `json:"totalAmount"`
 		Selections         []struct {
-			GUID                   string        `json:"guid"`
-			EntityType             string        `json:"entityType"`
-			ExternalID             interface{}   `json:"externalId"`
-			Deferred               bool          `json:"deferred"`
-			PreDiscountPrice       float64       `json:"preDiscountPrice"`
-			VoidReason             interface{}   `json:"voidReason"`
-			OptionGroup            interface{}   `json:"optionGroup"`
-			DisplayName            string        `json:"displayName"`
-			AppliedDiscounts       []interface{} `json:"appliedDiscounts"`
+			GUID             string      `json:"guid"`
+			EntityType       string      `json:"entityType"`
+			ExternalID       interface{} `json:"externalId"`
+			Deferred         bool        `json:"deferred"`
+			PreDiscountPrice float64     `json:"preDiscountPrice"`
+			VoidReason       interface{} `json:"voidReason"`
+			OptionGroup      interface{} `json:"optionGroup"`
+			DisplayName      string      `json:"displayName"`
+			AppliedDiscounts []struct {
+				AppliedPromoCode interface{} `json:"appliedPromoCode"`
+				Approver         struct {
+					EntityType string      `json:"entityType"`
+					ExternalID interface{} `json:"externalId"`
+					GUID       string      `json:"guid"`
+				} `json:"approver"`
+				ComboItems []interface{} `json:"comboItems"`
+				Discount   struct {
+					EntityType string `json:"entityType"`
+					GUID       string `json:"guid"`
+				} `json:"discount"`
+				DiscountAmount       float64     `json:"discountAmount"`
+				DiscountPercent      float64     `json:"discountPercent"`
+				DiscountType         string      `json:"discountType"`
+				EntityType           string      `json:"entityType"`
+				ExternalID           interface{} `json:"externalId"`
+				GUID                 string      `json:"guid"`
+				LoyaltyDetails       interface{} `json:"loyaltyDetails"`
+				Name                 string      `json:"name"`
+				NonTaxDiscountAmount float64     `json:"nonTaxDiscountAmount"`
+				ProcessingState      interface{} `json:"processingState"`
+				Triggers             []struct {
+					Quantity  float64 `json:"quantity"`
+					Selection struct {
+						EntityType string      `json:"entityType"`
+						ExternalID interface{} `json:"externalId"`
+						GUID       string      `json:"guid"`
+					} `json:"selection"`
+				} `json:"triggers"`
+			} `json:"AppliedDiscounts"`
 			Modifiers              []interface{} `json:"modifiers"`
 			SeatNumber             int           `json:"seatNumber"`
 			VoidDate               DateTime      `json:"voidDate"`
 			FulfillmentStatus      string        `json:"fulfillmentStatus"`
 			OptionGroupPricingMode interface{}   `json:"optionGroupPricingMode"`
-			SalesCategory          struct {
-				GUID       string      `json:"guid"`
-				EntityType string      `json:"entityType"`
-				ExternalID interface{} `json:"externalId"`
-			} `json:"salesCategory"`
-			SelectionType string  `json:"selectionType"`
-			Price         float64 `json:"price"`
-			Voided        bool    `json:"voided"`
-			AppliedTaxes  []struct {
+			SalesCategory          SalesCategory `json:"salesCategory"`
+			SelectionType          string        `json:"selectionType"`
+			Price                  float64       `json:"price"`
+			Voided                 bool          `json:"voided"`
+			AppliedTaxes           []struct {
 				GUID       string `json:"guid"`
 				EntityType string `json:"entityType"`
 				TaxRate    struct {
@@ -296,4 +349,122 @@ type Restaurant struct {
 		TakeoutThrottlingTime   int `json:"takeoutThrottlingTime"`
 		DeliveryThrottlingTime  int `json:"deliveryThrottlingTime"`
 	} `json:"prepTimes"`
+}
+type MenuGroups []MenuGroup
+
+type MenuGroup struct {
+	GUID          string        `json:"guid"`
+	EntityType    string        `json:"entityType"`
+	ExternalID    interface{}   `json:"externalId"`
+	Parent        interface{}   `json:"parent"`
+	Images        []interface{} `json:"images"`
+	Visibility    string        `json:"visibility"`
+	UnitOfMeasure string        `json:"unitOfMeasure"`
+	OptionGroups  []struct {
+		GUID       string      `json:"guid"`
+		EntityType string      `json:"entityType"`
+		ExternalID interface{} `json:"externalId"`
+	} `json:"optionGroups"`
+	Menu struct {
+		GUID       string      `json:"guid"`
+		EntityType string      `json:"entityType"`
+		ExternalID interface{} `json:"externalId"`
+	} `json:"menu"`
+	InheritUnitOfMeasure bool          `json:"inheritUnitOfMeasure"`
+	Subgroups            []interface{} `json:"subgroups"`
+	InheritOptionGroups  bool          `json:"inheritOptionGroups"`
+	OrderableOnline      string        `json:"orderableOnline"`
+	Name                 string        `json:"name"`
+	Items                []struct {
+		GUID       string      `json:"guid"`
+		EntityType string      `json:"entityType"`
+		ExternalID interface{} `json:"externalId"`
+	} `json:"items"`
+}
+
+type MenuItems []MenuItem
+
+type MenuItem struct {
+	GUID                 string        `json:"guid"`
+	EntityType           string        `json:"entityType"`
+	ExternalID           interface{}   `json:"externalId"`
+	Images               []interface{} `json:"images"`
+	Visibility           string        `json:"visibility"`
+	UnitOfMeasure        string        `json:"unitOfMeasure"`
+	OptionGroups         []interface{} `json:"optionGroups"`
+	Calories             interface{}   `json:"calories"`
+	Type                 interface{}   `json:"type"`
+	InheritUnitOfMeasure bool          `json:"inheritUnitOfMeasure"`
+	InheritOptionGroups  bool          `json:"inheritOptionGroups"`
+	OrderableOnline      string        `json:"orderableOnline"`
+	Name                 string        `json:"name"`
+	Plu                  string        `json:"plu"`
+	Sku                  string        `json:"sku"`
+}
+
+type Discounts []Discount
+
+type Discount struct {
+	GUID                string      `json:"guid"`
+	EntityType          string      `json:"entityType"`
+	Amount              float64     `json:"amount"`
+	SelectionType       string      `json:"selectionType"`
+	NonExclusive        bool        `json:"nonExclusive"`
+	Percentage          float64     `json:"percentage"`
+	Name                string      `json:"name"`
+	Active              bool        `json:"active"`
+	ItemPickingPriority string      `json:"itemPickingPriority"`
+	Type                string      `json:"type"`
+	FixedTotal          interface{} `json:"fixedTotal"`
+}
+
+type SalesCategories []SalesCategory
+
+type SalesCategory struct {
+	GUID       string `json:"guid"`
+	EntityType string `json:"entityType"`
+	Name       string `json:"name"`
+}
+
+type DiningOptions []DiningOption
+
+type DiningOption struct {
+	GUID       string      `json:"guid"`
+	EntityType string      `json:"entityType"`
+	ExternalID interface{} `json:"externalId"`
+	Name       string      `json:"name"`
+	Curbside   bool        `json:"curbside"`
+	Behavior   string      `json:"behavior"`
+}
+
+type RevenueCenters []RevenueCenter
+
+type RevenueCenter struct {
+	GUID        string `json:"guid"`
+	EntityType  string `json:"entityType"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+}
+
+type AlternativePaymentTypes []AlternativePaymentType
+
+type AlternativePaymentType struct {
+	GUID       string      `json:"guid"`
+	EntityType string      `json:"entityType"`
+	ExternalID interface{} `json:"externalId"`
+	Name       string      `json:"name"`
+}
+
+type TaxRates []TaxRate
+
+type TaxRate struct {
+	GUID                string        `json:"guid"`
+	EntityType          string        `json:"entityType"`
+	IsDefault           bool          `json:"isDefault"`
+	ConditionalTaxRates []interface{} `json:"conditionalTaxRates"`
+	TaxTable            []interface{} `json:"taxTable"`
+	Rate                float64       `json:"rate"`
+	RoundingType        string        `json:"roundingType"`
+	Name                string        `json:"name"`
+	Type                string        `json:"type"`
 }

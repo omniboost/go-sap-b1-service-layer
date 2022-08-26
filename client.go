@@ -560,7 +560,7 @@ func (c *Client) GetNextURL(resp *http.Response) (string, error) {
 		}
 
 		if pieces[1] == `rel="next"` {
-			return strings.TrimLeft(strings.TrimLeft(pieces[0], "<"), ">"), nil
+			return strings.TrimRight(strings.TrimLeft(pieces[0], "<"), ">"), nil
 		}
 	}
 
@@ -580,4 +580,18 @@ func (c *Client) GetNextPage(resp *http.Response) (int, error) {
 
 	s = u.Query().Get("page")
 	return strconv.Atoi(s)
+}
+
+func (c *Client) GetPageToken(resp *http.Response) (string, error) {
+	s, err := c.GetNextURL(resp)
+	if s == "" {
+		return "", nil
+	}
+
+	u, err := url.Parse(s)
+	if err != nil {
+		return "", err
+	}
+
+	return u.Query().Get("pageToken"), nil
 }
