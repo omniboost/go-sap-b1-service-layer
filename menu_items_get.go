@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/omniboost/go-toast/utils"
+	"github.com/omniboost/go-sap-b1-service-layer/utils"
 )
 
 func (c *Client) NewMenuItemsGetRequest() MenuItemsGetRequest {

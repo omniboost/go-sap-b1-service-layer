@@ -18,13 +18,13 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/omniboost/go-toast/utils"
+	"github.com/omniboost/go-sap-b1-service-layer/utils"
 	"github.com/pkg/errors"
 )
 
 const (
 	libraryVersion = "0.0.1"
-	userAgent      = "go-toast/" + libraryVersion
+	userAgent      = "go-sap-b1-service-layer/" + libraryVersion
 	mediaType      = "application/json"
 	charset        = "utf-8"
 )

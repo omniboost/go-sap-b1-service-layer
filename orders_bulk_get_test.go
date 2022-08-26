@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/omniboost/go-toast"
+	"github.com/omniboost/go-sap-b1-service-layer"
 )
 
 func TestOrdersBulkGet(t *testing.T) {

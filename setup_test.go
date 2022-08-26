@@ -6,7 +6,7 @@ import (
 	"os"
 	"testing"
 
-	asperion "github.com/omniboost/go-toast"
+	asperion "github.com/omniboost/go-sap-b1-service-layer"
 )
 
 var (

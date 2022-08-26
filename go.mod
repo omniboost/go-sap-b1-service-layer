@@ -1,4 +1,4 @@
-module github.com/omniboost/go-toast
+module github.com/omniboost/go-sap-b1-service-layer
 
 go 1.18
 

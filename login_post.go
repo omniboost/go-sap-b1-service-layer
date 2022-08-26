@@ -5,7 +5,7 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/omniboost/go-toast/utils"
+	"github.com/omniboost/go-sap-b1-service-layer/utils"
 )
 
 func (c *Client) NewLoginPostRequest() LoginPostRequest {
