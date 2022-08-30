@@ -1,4 +1,4 @@
-package toast_test
+package sap_test
 
 import (
 	"encoding/json"
@@ -6,9 +6,9 @@ import (
 	"testing"
 )
 
-func TestRevenueCentersGet(t *testing.T) {
-	req := client.NewRevenueCentersGetRequest()
-	resp, err, _ := req.Do()
+func TestChartOfAccountsGet(t *testing.T) {
+	req := client.NewChartOfAccountsGetRequest()
+	resp, err := req.Do()
 	if err != nil {
 		t.Error(err)
 	}

@@ -1,25 +1,27 @@
-package toast_test
+package sap_test
 
 import (
+	"crypto/tls"
 	"log"
+	"net/http"
 	"net/url"
 	"os"
 	"testing"
 
-	asperion "github.com/omniboost/go-sap-b1-service-layer"
+	sap "github.com/omniboost/go-sap-b1-service-layer"
 )
 
 var (
-	client *asperion.Client
+	client *sap.Client
 )
 
 func TestMain(m *testing.M) {
 	var err error
 
 	baseURLString := os.Getenv("BASE_URL")
-	clientID := os.Getenv("CLIENT_ID")
-	clientSecret := os.Getenv("CLIENT_SECRET")
-	toastRestaurantExternalID := os.Getenv("TOAST_RESTAURANT_EXTERNAL_ID")
+	username := os.Getenv("B1_USERNAME")
+	password := os.Getenv("B1_PASSWORD")
+	companyDB := os.Getenv("B1_COMPANY_DB")
 	debug := os.Getenv("DEBUG")
 	if err != nil {
 		log.Fatal(err)
@@ -33,10 +35,15 @@ func TestMain(m *testing.M) {
 		}
 	}
 
-	client = asperion.NewClient(nil)
-	client.SetClientID(clientID)
-	client.SetClientSecret(clientSecret)
-	client.SetToastRestaurantExternalID(toastRestaurantExternalID)
+	trans := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true}, // ignore expired SSL certificates
+	}
+	httpClient := &http.Client{Transport: trans}
+
+	client = sap.NewClient(httpClient)
+	client.SetUsername(username)
+	client.SetPassword(password)
+	client.SetCompanyDB(companyDB)
 	if debug != "" {
 		client.SetDebug(true)
 	}

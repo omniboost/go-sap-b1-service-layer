@@ -6,8 +6,8 @@ import (
 	"testing"
 )
 
-func TestLoginPost(t *testing.T) {
-	req := client.NewLoginPostRequest()
+func TestInvoicesPost(t *testing.T) {
+	req := client.NewInvoicesPostRequest()
 	req.RequestBody().Username = client.Username()
 	req.RequestBody().Password = client.Password()
 	req.RequestBody().CompanyDB = client.CompanyDB()

@@ -1,9 +1,8 @@
-package toast
+package sap
 
 import (
 	"net/http"
 	"net/url"
-	"time"
 
 	"github.com/omniboost/go-sap-b1-service-layer/utils"
 )
@@ -13,6 +12,7 @@ func (c *Client) NewLoginPostRequest() LoginPostRequest {
 		client:  c,
 		method:  http.MethodPost,
 		headers: http.Header{},
+		path:    "/b1s/v1/Login",
 	}
 
 	r.queryParams = r.NewQueryParams()
@@ -24,6 +24,7 @@ func (c *Client) NewLoginPostRequest() LoginPostRequest {
 type LoginPostRequest struct {
 	client      *Client
 	queryParams *LoginPostRequestQueryParams
+	path        string
 	pathParams  *LoginPostRequestPathParams
 	method      string
 	headers     http.Header
@@ -66,6 +67,10 @@ func (p *LoginPostRequestPathParams) Params() map[string]string {
 	return map[string]string{}
 }
 
+func (r *LoginPostRequest) Path() *string {
+	return &r.path
+}
+
 func (r *LoginPostRequest) PathParams() *LoginPostRequestPathParams {
 	return r.pathParams
 }
@@ -83,15 +88,13 @@ func (r *LoginPostRequest) Method() string {
 }
 
 func (r LoginPostRequest) NewRequestBody() LoginPostRequestBody {
-	return LoginPostRequestBody{
-		UserAccessType: "TOAST_MACHINE_CLIENT",
-	}
+	return LoginPostRequestBody{}
 }
 
 type LoginPostRequestBody struct {
-	ClientID       string `json:"clientId"`
-	ClientSecret   string `json:"clientSecret"`
-	UserAccessType string `json:"userAccessType"`
+	Username  string `json:"UserName"`
+	Password  string `json:"Password"`
+	CompanyDB string `json:"CompanyDB"`
 }
 
 func (r *LoginPostRequest) RequestBody() *LoginPostRequestBody {
@@ -111,13 +114,14 @@ func (r *LoginPostRequest) NewResponseBody() *LoginPostResponseBody {
 }
 
 type LoginPostResponseBody struct {
-	Class  string `json:"@class"`
-	Token  Token  `json:"token"`
-	Status string `json:"status"`
+	OdataMetadata  string `json:"odata.metadata"`
+	SessionID      string `json:"SessionId"`
+	Version        string `json:"Version"`
+	SessionTimeout int    `json:"SessionTimeout"`
 }
 
 func (r *LoginPostRequest) URL() *url.URL {
-	u := r.client.GetEndpointURL("/authentication/v1/authentication/login", r.PathParams())
+	u := r.client.GetEndpointURL(*r.Path(), r.PathParams())
 	return &u
 }
 
@@ -136,6 +140,5 @@ func (r *LoginPostRequest) Do() (LoginPostResponseBody, error) {
 
 	responseBody := r.NewResponseBody()
 	_, err = r.client.Do(req, responseBody)
-	responseBody.Token.expiry = time.Now().Add(time.Duration(responseBody.Token.ExpiresIn) * time.Second)
 	return *responseBody, err
 }

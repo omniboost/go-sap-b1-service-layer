@@ -1,4 +1,4 @@
-package toast
+package sap
 
 import (
 	"bytes"
@@ -10,21 +10,20 @@ import (
 	"log"
 	"mime/multipart"
 	"net/http"
+	"net/http/cookiejar"
 	"net/http/httputil"
 	"net/textproto"
 	"net/url"
 	"path"
-	"strconv"
 	"strings"
 	"text/template"
 
-	"github.com/omniboost/go-sap-b1-service-layer/utils"
 	"github.com/pkg/errors"
 )
 
 const (
 	libraryVersion = "0.0.1"
-	userAgent      = "go-sap-b1-service-layer/" + libraryVersion
+	userAgent      = "go-sap/" + libraryVersion
 	mediaType      = "application/json"
 	charset        = "utf-8"
 )
@@ -32,9 +31,11 @@ const (
 var (
 	BaseURL = url.URL{
 		Scheme: "https",
-		Host:   "ws-api.toasttab.com",
+		Host:   "localhost:50000",
 		Path:   "",
 	}
+
+///BusinessPartners
 )
 
 // NewClient returns a new Exact Globe Client client
@@ -64,10 +65,10 @@ type Client struct {
 	baseURL url.URL
 
 	// credentials
-	clientID                  string
-	clientSecret              string
-	toastRestaurantExternalID string
-	token                     Token
+	username  string
+	password  string
+	companyDB string
+	cookiejar *cookiejar.Jar
 
 	// User agent for client
 	userAgent string
@@ -90,28 +91,64 @@ func (c *Client) SetHTTPClient(client *http.Client) {
 	c.http = client
 }
 
-func (c Client) ClientID() string {
-	return c.clientID
+func (c Client) Username() string {
+	return c.username
 }
 
-func (c *Client) SetClientID(clientID string) {
-	c.clientID = clientID
+func (c *Client) SetUsername(username string) {
+	c.username = username
 }
 
-func (c Client) ClientSecret() string {
-	return c.clientSecret
+func (c Client) Password() string {
+	return c.password
 }
 
-func (c *Client) SetClientSecret(clientSecret string) {
-	c.clientSecret = clientSecret
+func (c *Client) SetPassword(password string) {
+	c.password = password
 }
 
-func (c Client) ToastRestaurantExternalID() string {
-	return c.toastRestaurantExternalID
+func (c Client) CompanyDB() string {
+	return c.companyDB
 }
 
-func (c *Client) SetToastRestaurantExternalID(toastRestaurantExternalID string) {
-	c.toastRestaurantExternalID = toastRestaurantExternalID
+func (c *Client) SetCompanyDB(companyDB string) {
+	c.companyDB = companyDB
+}
+
+func (c *Client) InitSession(req *http.Request) error {
+	if c.cookiejar == nil {
+		jar, err := c.FetchLoginCookies()
+		if err != nil {
+			return errors.WithStack(err)
+		}
+		c.cookiejar = &jar
+	}
+
+	return nil
+}
+
+func (c *Client) FetchLoginCookies() (cookiejar.Jar, error) {
+	var err error
+
+	req := c.NewLoginPostRequest()
+	req.RequestBody().Username = c.Username()
+	req.RequestBody().Password = c.Password()
+	req.RequestBody().CompanyDB = c.CompanyDB()
+	jar, err := cookiejar.New(nil)
+	if err != nil {
+		return cookiejar.Jar{}, errors.WithStack(err)
+	}
+
+	req.client.http.Jar = jar
+	_, err = req.Do()
+	if err != nil {
+		return cookiejar.Jar{}, errors.WithStack(err)
+	}
+	return *jar, nil
+}
+
+func (c *Client) HasCookie() (bool, error) {
+	return (c.cookiejar != nil), nil
 }
 
 func (c Client) Debug() bool {
@@ -221,7 +258,7 @@ func (c *Client) NewRequest(ctx context.Context, req Request) (*http.Request, er
 	}
 
 	// values := url.Values{}
-	// err = utils.AddURLValuesToRequest(values, req, true)
+	// err = AddURLValuesToRequest(values, req, true)
 	// if err != nil {
 	// 	return nil, err
 	// }
@@ -235,9 +272,6 @@ func (c *Client) NewRequest(ctx context.Context, req Request) (*http.Request, er
 	r.Header.Add("Content-Type", fmt.Sprintf("%s; charset=%s", c.MediaType(), c.Charset()))
 	r.Header.Add("Accept", c.MediaType())
 	r.Header.Add("User-Agent", c.UserAgent())
-	if c.ToastRestaurantExternalID() != "" {
-		r.Header.Add("Toast-Restaurant-External-ID", c.ToastRestaurantExternalID())
-	}
 
 	return r, nil
 }
@@ -275,7 +309,7 @@ func (c *Client) NewFormRequest(ctx context.Context, method string, URL url.URL,
 	}
 
 	values := url.Values{}
-	err = utils.AddURLValuesToRequest(values, req, true)
+	err = AddURLValuesToRequest(values, req, true)
 	if err != nil {
 		return nil, err
 	}
@@ -455,24 +489,21 @@ type ErrorResponse struct {
 	// HTTP response that caused this error
 	Response *http.Response
 
-	Status           int         `json:"status"`
-	Code             int         `json:"code"`
-	Message          string      `json:"message"`
-	MessageKey       string      `json:"messageKey"`
-	FieldName        string      `json:"fieldName"`
-	Link             string      `json:"link"`
-	RequestID        string      `json:"requestId"`
-	DeveloperMessage string      `json:"developerMessage"`
-	Errors           []string    `json:"errors"`
-	CanRetry         interface{} `json:"canRetry"`
+	Err struct {
+		Code    interface{} `json:"code"`
+		Message struct {
+			Lang  string `json:"lang"`
+			Value string `json:"value"`
+		} `json:"message"`
+	} `json:"error"`
 }
 
-func (r *ErrorResponse) Error() string {
-	if r.Code == 0 {
+func (r ErrorResponse) Error() string {
+	if (r.Err.Code == nil || r.Err.Code == "" || r.Err.Code == 0) && r.Err.Message.Value == "" {
 		return ""
 	}
 
-	return fmt.Sprintf("%d: %s", r.Code, r.Message)
+	return fmt.Sprintf("%v: %s", r.Err.Code, r.Err.Message.Value)
 }
 
 func checkContentType(response *http.Response) error {
@@ -520,78 +551,4 @@ func GetFileContentType(file io.Reader) (string, error) {
 	contentType := http.DetectContentType(buffer)
 
 	return contentType, nil
-}
-
-func (c *Client) InitToken(req *http.Request) error {
-	if c.token.AccessToken == "" {
-		req := c.NewLoginPostRequest()
-		req.RequestBody().ClientID = c.ClientID()
-		req.RequestBody().ClientSecret = c.ClientSecret()
-		resp, err := req.Do()
-		if err != nil {
-			return errors.WithStack(err)
-		}
-
-		c.token = resp.Token
-	}
-
-	if c.token.IsExpired() {
-		req := c.NewLoginPostRequest()
-		req.RequestBody().ClientID = c.ClientID()
-		req.RequestBody().ClientSecret = c.ClientSecret()
-		resp, err := req.Do()
-		if err != nil {
-			return errors.WithStack(err)
-		}
-
-		c.token = resp.Token
-	}
-
-	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", c.token.AccessToken))
-	return nil
-}
-
-func (c *Client) GetNextURL(resp *http.Response) (string, error) {
-	for _, h := range resp.Header.Values("Link") {
-		pieces := strings.Split(h, "; ")
-		if len(pieces) < 2 {
-			// do nothing
-			continue
-		}
-
-		if pieces[1] == `rel="next"` {
-			return strings.TrimRight(strings.TrimLeft(pieces[0], "<"), ">"), nil
-		}
-	}
-
-	return "", nil
-}
-
-func (c *Client) GetNextPage(resp *http.Response) (int, error) {
-	s, err := c.GetNextURL(resp)
-	if s == "" {
-		return 0, nil
-	}
-
-	u, err := url.Parse(s)
-	if err != nil {
-		return 0, err
-	}
-
-	s = u.Query().Get("page")
-	return strconv.Atoi(s)
-}
-
-func (c *Client) GetPageToken(resp *http.Response) (string, error) {
-	s, err := c.GetNextURL(resp)
-	if s == "" {
-		return "", nil
-	}
-
-	u, err := url.Parse(s)
-	if err != nil {
-		return "", err
-	}
-
-	return u.Query().Get("pageToken"), nil
 }
