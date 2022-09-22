@@ -27,7 +27,7 @@ type DocumentLines []DocumentLine
 
 type DocumentLine struct {
 	ItemCode        string `json:"ItemCode"`
-	ItemDescription string `json:"ItemDescription"`
+	ItemDescription string `json:"ItemDescription,omitempty"`
 	UnitPrice       string `json:"UnitPrice"`
 	Quantity        string `json:"Quantity"`
 	DiscountPercent string `json:"DiscountPercent"`
@@ -36,4 +36,5 @@ type DocumentLine struct {
 	PriceAfterVAT   string `json:"PriceAfterVAT"`
 	ItemsGroupCode  string `json:"ItemsGroupCode"`
 	Ccoste          string `json:"Ccoste"`
+	Currency        string `json:"Currency"`
 }
