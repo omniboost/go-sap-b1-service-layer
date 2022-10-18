@@ -6,8 +6,8 @@ import (
 	"testing"
 )
 
-func TestBusinessPartnersPost(t *testing.T) {
-	req := client.NewBusinessPartnersPostRequest()
+func TestMetadataGet(t *testing.T) {
+	req := client.NewMetadataGetRequest()
 	resp, err := req.Do()
 	if err != nil {
 		t.Error(err)
