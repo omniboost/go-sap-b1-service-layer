@@ -16,27 +16,42 @@ type BusinessPartner struct {
 }
 
 type Invoice struct {
-	DocDate       string        `json:"DocDate"`
-	DocDueDate    string        `json:"DocDueDate"`
-	CardCode      string        `json:"CardCode"`
-	Comments      string        `json:"Comments"`
-	DocumentLines DocumentLines `json:"DocumentLines"`
+	DocDate         string          `json:"DocDate,omitempty"`
+	DocDueDate      string          `json:"DocDueDate,omitempty"`
+	DueDate         string          `json:"DueDate,omitempty"`
+	CardCode        string          `json:"CardCode,omitempty"`
+	TaxDate         string          `json:"TaxDate,omitempty"`
+	Comments        string          `json:"Comments,omitempty"`
+	DocObjectCode   string          `json:"DocObjectCode,omitempty"`
+	DocType         string          `json:"DocType,omitempty"`
+	CashSum         float64         `json:"CashSum,omitempty"`
+	DocumentLines   DocumentLines   `json:"DocumentLines,omitempty"`
+	PaymentInvoices PaymentInvoices `json:"PaymentInvoices,omitempty"`
 }
 
 type DocumentLines []DocumentLine
 
 type DocumentLine struct {
-	ItemCode        string `json:"ItemCode"`
-	ItemDescription string `json:"ItemDescription,omitempty"`
-	UnitPrice       string `json:"UnitPrice"`
-	Quantity        string `json:"Quantity"`
-	DiscountPercent string `json:"DiscountPercent"`
-	VatRate         string `json:"VatRate"`
-	FreeText        string `json:"FreeText"`
-	PriceAfterVAT   string `json:"PriceAfterVAT"`
-	ItemsGroupCode  string `json:"ItemsGroupCode"`
-	Ccoste          string `json:"Ccoste"`
-	Currency        string `json:"Currency"`
+	AccountCode     string  `json:"AccountCode,omitempty"`
+	ItemCode        string  `json:"ItemCode,omitempty"`
+	ItemDescription string  `json:"ItemDescription,omitempty"`
+	UnitPrice       float64 `json:"UnitPrice,omitempty"`
+	Quantity        string  `json:"Quantity,omitempty"`
+	DiscountPercent string  `json:"DiscountPercent,omitempty"`
+	VatRate         string  `json:"VatRate,omitempty"`
+	FreeText        string  `json:"FreeText,omitempty"`
+	PriceAfterVAT   float64 `json:"PriceAfterVAT,omitempty"`
+	ItemsGroupCode  string  `json:"ItemsGroupCode,omitempty"`
+	Ccoste          string  `json:"Ccoste,omitempty"`
+	Currency        string  `json:"Currency,omitempty"`
+	TaxCode         string  `json:"TaxCode"`
+}
+
+type PaymentInvoices []PaymentInvoice
+
+type PaymentInvoice struct {
+	DocEntry   string  `json:"DocEntry,omitempty"`
+	SumApplied float64 `json:"SumApplied,omitempty"`
 }
 
 type Items []Item
