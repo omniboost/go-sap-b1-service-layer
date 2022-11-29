@@ -50,7 +50,7 @@ type DocumentLine struct {
 type PaymentInvoices []PaymentInvoice
 
 type PaymentInvoice struct {
-	DocEntry   string  `json:"DocEntry,omitempty"`
+	DocEntry   int     `json:"DocEntry,omitempty"`
 	SumApplied float64 `json:"SumApplied,omitempty"`
 }
 
