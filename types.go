@@ -50,8 +50,9 @@ type DocumentLine struct {
 type PaymentInvoices []PaymentInvoice
 
 type PaymentInvoice struct {
-	DocEntry   int     `json:"DocEntry,omitempty"`
-	SumApplied float64 `json:"SumApplied,omitempty"`
+	DocEntry      int     `json:"DocEntry,omitempty"`
+	SumApplied    float64 `json:"SumApplied,omitempty"`
+	InstallmentID int     `json:"InstallmentId,omitempty"`
 }
 
 type Items []Item
