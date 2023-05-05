@@ -16,11 +16,11 @@ type BusinessPartner struct {
 }
 
 type Invoice struct {
-	DocDate         string          `json:"DocDate,omitempty"`
-	DocDueDate      string          `json:"DocDueDate,omitempty"`
-	DueDate         string          `json:"DueDate,omitempty"`
+	DocDate         Date            `json:"DocDate,omitempty"`
+	DocDueDate      Date            `json:"DocDueDate,omitempty"`
+	DueDate         Date            `json:"DueDate,omitempty"`
 	CardCode        string          `json:"CardCode,omitempty"`
-	TaxDate         string          `json:"TaxDate,omitempty"`
+	TaxDate         Date            `json:"TaxDate,omitempty"`
 	Comments        string          `json:"Comments,omitempty"`
 	DocObjectCode   string          `json:"DocObjectCode,omitempty"`
 	DocType         string          `json:"DocType,omitempty"`
@@ -38,13 +38,13 @@ type DocumentLine struct {
 	UnitPrice       float64 `json:"UnitPrice,omitempty"`
 	Quantity        string  `json:"Quantity,omitempty"`
 	DiscountPercent string  `json:"DiscountPercent,omitempty"`
-	VatRate         string  `json:"VatRate,omitempty"`
+	VATRate         string  `json:"VatRate,omitempty"`
 	FreeText        string  `json:"FreeText,omitempty"`
 	PriceAfterVAT   float64 `json:"PriceAfterVAT,omitempty"`
 	ItemsGroupCode  string  `json:"ItemsGroupCode,omitempty"`
 	Ccoste          string  `json:"Ccoste,omitempty"`
 	Currency        string  `json:"Currency,omitempty"`
-	TaxCode         string  `json:"TaxCode"`
+	TaxCode         string  `json:"TaxCode,omitempty"`
 }
 
 type PaymentInvoices []PaymentInvoice
@@ -65,7 +65,7 @@ type Item struct {
 	CustomsGroupCode                 int         `json:"CustomsGroupCode"`
 	SalesVATGroup                    interface{} `json:"SalesVATGroup"`
 	BarCode                          interface{} `json:"BarCode"`
-	VatLiable                        string      `json:"VatLiable"`
+	VATLiable                        string      `json:"VatLiable"`
 	PurchaseItem                     string      `json:"PurchaseItem"`
 	SalesItem                        string      `json:"SalesItem"`
 	InventoryItem                    string      `json:"InventoryItem"`
@@ -279,7 +279,7 @@ type Item struct {
 	Employee                         interface{} `json:"Employee"`
 	Location                         interface{} `json:"Location"`
 	AssetStatus                      string      `json:"AssetStatus"`
-	CapitalizationDate               interface{} `json:"CapitalizationDate"`
+	CapitalizationDate               Date        `json:"CapitalizationDate"`
 	StatisticalAsset                 string      `json:"StatisticalAsset"`
 	Cession                          string      `json:"Cession"`
 	DeactivateAfterUsefulLife        string      `json:"DeactivateAfterUsefulLife"`
@@ -307,7 +307,7 @@ type Item struct {
 	EnforceAssetSerialNumbers        string      `json:"EnforceAssetSerialNumbers"`
 	AttachmentEntry                  interface{} `json:"AttachmentEntry"`
 	LinkedResource                   interface{} `json:"LinkedResource"`
-	UpdateDate                       string      `json:"UpdateDate"`
+	UpdateDate                       Date        `json:"UpdateDate"`
 	UpdateTime                       string      `json:"UpdateTime"`
 	GSTRelevnt                       string      `json:"GSTRelevnt"`
 	SACEntry                         int         `json:"SACEntry"`
@@ -321,7 +321,7 @@ type Item struct {
 	Tnved                            interface{} `json:"TNVED"`
 	ImportedItem                     string      `json:"ImportedItem"`
 	PricingUnit                      int         `json:"PricingUnit"`
-	CreateDate                       string      `json:"CreateDate"`
+	CreateDate                       Date        `json:"CreateDate"`
 	CreateTime                       string      `json:"CreateTime"`
 	NVECode                          interface{} `json:"NVECode"`
 	CtrSealQty                       float64     `json:"CtrSealQty"`
@@ -437,4 +437,138 @@ type Item struct {
 		IntrastatRelevant          string      `json:"IntrastatRelevant"`
 		StatisticalCode            interface{} `json:"StatisticalCode"`
 	} `json:"ItemIntrastatExtension"`
+}
+
+type JournalEntries []JournalEntry
+
+type JournalEntry struct {
+	ReferenceDate                           Date              `json:"ReferenceDate,omitempty"`
+	Memo                                    string            `json:"Memo,omitempty"`
+	Reference                               string            `json:"Reference,omitempty"`
+	Reference2                              string            `json:"Reference2,omitempty"`
+	TransactionCode                         interface{}       `json:"TransactionCode,omitempty"`
+	ProjectCode                             interface{}       `json:"ProjectCode,omitempty"`
+	TaxDate                                 Date              `json:"TaxDate,omitempty"`
+	JdtNum                                  int               `json:"JdtNum,omitempty"`
+	Indicator                               interface{}       `json:"Indicator,omitempty"`
+	UseAutoStorno                           string            `json:"UseAutoStorno,omitempty"`
+	StornoDate                              Date              `json:"StornoDate,omitempty"`
+	VATDate                                 Date              `json:"VatDate,omitempty"`
+	Series                                  int               `json:"Series,omitempty"`
+	StampTax                                string            `json:"StampTax,omitempty"`
+	DueDate                                 Date              `json:"DueDate,omitempty"`
+	AutoVAT                                 string            `json:"AutoVAT,omitempty"`
+	Number                                  int               `json:"Number,omitempty"`
+	FolioNumber                             interface{}       `json:"FolioNumber,omitempty"`
+	FolioPrefixString                       interface{}       `json:"FolioPrefixString,omitempty"`
+	ReportEU                                string            `json:"ReportEU,omitempty"`
+	Report347                               string            `json:"Report347,omitempty"`
+	Printed                                 string            `json:"Printed,omitempty"`
+	LocationCode                            interface{}       `json:"LocationCode,omitempty"`
+	OriginalJournal                         string            `json:"OriginalJournal,omitempty"`
+	Original                                int               `json:"Original,omitempty"`
+	BaseReference                           string            `json:"BaseReference,omitempty"`
+	BlockDunningLetter                      string            `json:"BlockDunningLetter,omitempty"`
+	AutomaticWT                             string            `json:"AutomaticWT,omitempty"`
+	WTSum                                   float64           `json:"WTSum,omitempty"`
+	WTSumSC                                 float64           `json:"WTSumSC,omitempty"`
+	WTSumFC                                 float64           `json:"WTSumFC,omitempty"`
+	SignatureInputMessage                   interface{}       `json:"SignatureInputMessage,omitempty"`
+	SignatureDigest                         interface{}       `json:"SignatureDigest,omitempty"`
+	CertificationNumber                     interface{}       `json:"CertificationNumber,omitempty"`
+	PrivateKeyVersion                       interface{}       `json:"PrivateKeyVersion,omitempty"`
+	Corisptivi                              string            `json:"Corisptivi,omitempty"`
+	Reference3                              interface{}       `json:"Reference3,omitempty"`
+	DocumentType                            interface{}       `json:"DocumentType,omitempty"`
+	DeferredTax                             string            `json:"DeferredTax,omitempty"`
+	BlanketAgreementNumber                  interface{}       `json:"BlanketAgreementNumber,omitempty"`
+	OperationCode                           interface{}       `json:"OperationCode,omitempty"`
+	ResidenceNumberType                     string            `json:"ResidenceNumberType,omitempty"`
+	ECDPostingType                          string            `json:"ECDPostingType,omitempty"`
+	ExposedTransNumber                      interface{}       `json:"ExposedTransNumber,omitempty"`
+	PointOfIssueCode                        interface{}       `json:"PointOfIssueCode,omitempty"`
+	Letter                                  interface{}       `json:"Letter,omitempty"`
+	FolioNumberFrom                         interface{}       `json:"FolioNumberFrom,omitempty"`
+	FolioNumberTo                           interface{}       `json:"FolioNumberTo,omitempty"`
+	IsCostCenterTransfer                    string            `json:"IsCostCenterTransfer,omitempty"`
+	ReportingSectionControlStatementVAT     interface{}       `json:"ReportingSectionControlStatementVAT,omitempty"`
+	ExcludeFromTaxReportControlStatementVAT string            `json:"ExcludeFromTaxReportControlStatementVAT,omitempty"`
+	SAPPassport                             interface{}       `json:"SAPPassport,omitempty"`
+	Cig                                     interface{}       `json:"Cig,omitempty"`
+	Cup                                     interface{}       `json:"Cup,omitempty"`
+	AdjustTransaction                       string            `json:"AdjustTransaction,omitempty"`
+	AttachmentEntry                         interface{}       `json:"AttachmentEntry,omitempty"`
+	JournalEntryLines                       JournalEntryLines `json:"JournalEntryLines,omitempty"`
+	WithholdingTaxDataCollection            []interface{}     `json:"WithholdingTaxDataCollection,omitempty"`
+	ElectronicProtocols                     []interface{}     `json:"ElectronicProtocols,omitempty"`
+}
+
+type JournalEntryLines []JournalEntryLine
+
+type JournalEntryLine struct {
+	LineID                         int           `json:"Line_ID,omitempty"`
+	AccountCode                    string        `json:"AccountCode,omitempty"`
+	Debit                          float64       `json:"Debit,omitempty"`
+	Credit                         float64       `json:"Credit,omitempty"`
+	FCDebit                        float64       `json:"FCDebit,omitempty"`
+	FCCredit                       float64       `json:"FCCredit,omitempty"`
+	FCCurrency                     interface{}   `json:"FCCurrency,omitempty"`
+	DueDate                        Date          `json:"DueDate,omitempty"`
+	ShortName                      string        `json:"ShortName,omitempty"`
+	ContraAccount                  string        `json:"ContraAccount,omitempty"`
+	LineMemo                       string        `json:"LineMemo,omitempty"`
+	ReferenceDate1                 Date          `json:"ReferenceDate1,omitempty"`
+	ReferenceDate2                 Date          `json:"ReferenceDate2,omitempty"`
+	Reference1                     string        `json:"Reference1,omitempty"`
+	Reference2                     string        `json:"Reference2,omitempty"`
+	ProjectCode                    string        `json:"ProjectCode,omitempty"`
+	CostingCode                    string        `json:"CostingCode,omitempty"`
+	TaxDate                        Date          `json:"TaxDate,omitempty"`
+	BaseSum                        float64       `json:"BaseSum,omitempty"`
+	TaxGroup                       interface{}   `json:"TaxGroup,omitempty"`
+	DebitSys                       float64       `json:"DebitSys,omitempty"`
+	CreditSys                      float64       `json:"CreditSys,omitempty"`
+	VATDate                        Date          `json:"VatDate,omitempty"`
+	VATLine                        string        `json:"VatLine,omitempty"`
+	SystemBaseAmount               float64       `json:"SystemBaseAmount,omitempty"`
+	VATAmount                      float64       `json:"VatAmount,omitempty"`
+	SystemVATAmount                float64       `json:"SystemVatAmount,omitempty"`
+	GrossValue                     float64       `json:"GrossValue,omitempty"`
+	AdditionalReference            string        `json:"AdditionalReference,omitempty"`
+	CheckAbs                       interface{}   `json:"CheckAbs,omitempty"`
+	CostingCode2                   string        `json:"CostingCode2,omitempty"`
+	CostingCode3                   string        `json:"CostingCode3,omitempty"`
+	CostingCode4                   string        `json:"CostingCode4,omitempty"`
+	TaxCode                        interface{}   `json:"TaxCode,omitempty"`
+	TaxPostAccount                 string        `json:"TaxPostAccount,omitempty"`
+	CostingCode5                   string        `json:"CostingCode5,omitempty"`
+	LocationCode                   interface{}   `json:"LocationCode,omitempty"`
+	ControlAccount                 string        `json:"ControlAccount,omitempty"`
+	EqualizationTaxAmount          float64       `json:"EqualizationTaxAmount,omitempty"`
+	SystemEqualizationTaxAmount    float64       `json:"SystemEqualizationTaxAmount,omitempty"`
+	TotalTax                       float64       `json:"TotalTax,omitempty"`
+	SystemTotalTax                 float64       `json:"SystemTotalTax,omitempty"`
+	WTLiable                       string        `json:"WTLiable,omitempty"`
+	WTRow                          string        `json:"WTRow,omitempty"`
+	PaymentBlock                   string        `json:"PaymentBlock,omitempty"`
+	BlockReason                    interface{}   `json:"BlockReason,omitempty"`
+	FederalTaxID                   string        `json:"FederalTaxID,omitempty"`
+	Bplid                          interface{}   `json:"BPLID,omitempty"`
+	BPLName                        interface{}   `json:"BPLName,omitempty"`
+	VATRegNum                      interface{}   `json:"VATRegNum,omitempty"`
+	PaymentOrdered                 string        `json:"PaymentOrdered,omitempty"`
+	ExposedTransNumber             interface{}   `json:"ExposedTransNumber,omitempty"`
+	DocumentArray                  interface{}   `json:"DocumentArray,omitempty"`
+	DocumentLine                   interface{}   `json:"DocumentLine,omitempty"`
+	CostElementCode                interface{}   `json:"CostElementCode,omitempty"`
+	Cig                            interface{}   `json:"Cig,omitempty"`
+	Cup                            interface{}   `json:"Cup,omitempty"`
+	IncomeClassificationCategory   interface{}   `json:"IncomeClassificationCategory,omitempty"`
+	IncomeClassificationType       interface{}   `json:"IncomeClassificationType,omitempty"`
+	ExpensesClassificationCategory interface{}   `json:"ExpensesClassificationCategory,omitempty"`
+	ExpensesClassificationType     interface{}   `json:"ExpensesClassificationType,omitempty"`
+	VATClassificationCategory      interface{}   `json:"VATClassificationCategory,omitempty"`
+	VATClassificationType          interface{}   `json:"VATClassificationType,omitempty"`
+	VATExemptionCause              interface{}   `json:"VATExemptionCause,omitempty"`
+	CashFlowAssignments            []interface{} `json:"CashFlowAssignments,omitempty"`
 }
