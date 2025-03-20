@@ -1,6 +1,9 @@
 package odata
 
-import "strings"
+import (
+	"fmt"
+	"strings"
+)
 
 func NewSelect(allowed []string) *Select {
 	return &Select{
@@ -48,4 +51,8 @@ func (t *Select) MarshalSchema() string {
 
 func (s Select) IsZero() bool {
 	return len(s.Values) == 0
+}
+
+func (t Select) Format(f fmt.State, c rune) {
+	f.Write([]byte(t.MarshalSchema()))
 }

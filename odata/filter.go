@@ -1,5 +1,7 @@
 package odata
 
+import "fmt"
+
 func NewFilter() *Filter {
 	return &Filter{}
 }
@@ -18,4 +20,8 @@ func (f *Filter) MarshalSchema() string {
 
 func (f Filter) IsZero() bool {
 	return f.Query == ""
+}
+
+func (t Filter) Format(f fmt.State, c rune) {
+	f.Write([]byte(t.MarshalSchema()))
 }

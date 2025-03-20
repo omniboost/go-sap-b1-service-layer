@@ -1,6 +1,9 @@
 package odata
 
-import "strconv"
+import (
+	"fmt"
+	"strconv"
+)
 
 func NewSkip() *Skip {
 	return &Skip{}
@@ -25,4 +28,8 @@ func (t *Skip) MarshalSchema() string {
 
 func (t Skip) IsZero() bool {
 	return t.i == 0
+}
+
+func (t Skip) Format(f fmt.State, c rune) {
+	f.Write([]byte(t.MarshalSchema()))
 }

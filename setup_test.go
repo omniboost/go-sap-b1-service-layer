@@ -2,6 +2,7 @@ package sap_test
 
 import (
 	"crypto/tls"
+	client2 "github.com/omniboost/go-omniboost-http-client/client"
 	"log"
 	"net/http"
 	"net/url"
@@ -12,7 +13,8 @@ import (
 )
 
 var (
-	client *sap.Client
+	client    *sap.Client
+	sabClient *sap.SapB1Client
 )
 
 func TestMain(m *testing.M) {
@@ -53,5 +55,19 @@ func TestMain(m *testing.M) {
 	}
 
 	client.SetDisallowUnknownFields(true)
-	m.Run()
+
+	opts := []client2.Option{
+		sap.WithAuth(username, password, companyDB),
+		client2.WithDisallowUnknownFields(true),
+		client2.WithHttpClient(httpClient),
+		client2.WithDebug(debug != ""),
+	}
+	if baseURL != nil {
+		opts = append(opts, client2.WithBaseURL(*baseURL))
+	}
+	sabClient = sap.NewSapB1Client(
+		opts...,
+	)
+
+	os.Exit(m.Run())
 }

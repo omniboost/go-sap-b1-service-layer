@@ -1,6 +1,9 @@
 package odata
 
-import "strconv"
+import (
+	"fmt"
+	"strconv"
+)
 
 func NewCount() *Count {
 	return &Count{}
@@ -25,4 +28,8 @@ func (t *Count) MarshalSchema() string {
 
 func (t Count) IsZero() bool {
 	return t.i == 0
+}
+
+func (t Count) Format(f fmt.State, c rune) {
+	f.Write([]byte(t.MarshalSchema()))
 }

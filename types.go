@@ -58,6 +58,7 @@ type PaymentInvoice struct {
 type Items []Item
 
 type Item struct {
+	ETag                             string      `json:"@odata.etag,omitempty"`
 	ItemCode                         string      `json:"ItemCode"`
 	ItemName                         string      `json:"ItemName"`
 	ForeignName                      interface{} `json:"ForeignName"`

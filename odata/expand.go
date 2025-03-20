@@ -1,6 +1,9 @@
 package odata
 
-import "strings"
+import (
+	"fmt"
+	"strings"
+)
 
 func NewExpand(allowed []string) *Expand {
 	return &Expand{
@@ -48,4 +51,8 @@ func (e *Expand) Query() string {
 
 func (e *Expand) MarshalSchema() string {
 	return e.Query()
+}
+
+func (e *Expand) Format(f fmt.State, c rune) {
+	f.Write([]byte(e.MarshalSchema()))
 }

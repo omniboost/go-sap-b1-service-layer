@@ -46,3 +46,7 @@ func (o *OrderBy) MarshalSchema() string {
 	}
 	return strings.Join(pairs, ",")
 }
+
+func (o *OrderBy) Format(f fmt.State, c rune) {
+	f.Write([]byte(o.MarshalSchema()))
+}

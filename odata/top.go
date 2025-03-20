@@ -1,6 +1,9 @@
 package odata
 
-import "strconv"
+import (
+	"fmt"
+	"strconv"
+)
 
 func NewTop() *Top {
 	return &Top{}
@@ -25,4 +28,8 @@ func (t *Top) MarshalSchema() string {
 
 func (t Top) IsZero() bool {
 	return t.i == 0
+}
+
+func (t Top) Format(f fmt.State, c rune) {
+	f.Write([]byte(t.MarshalSchema()))
 }
