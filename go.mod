@@ -5,7 +5,7 @@ go 1.24.0
 require (
 	github.com/davecgh/go-spew v1.1.1
 	github.com/gorilla/schema v0.0.0-20171211162101-9fa3b6af65dc
-	github.com/omniboost/go-omniboost-http-client v0.0.0-20250320145216-5cb035110f53
+	github.com/omniboost/go-omniboost-http-client v0.0.0-20250321143618-7cf3b125e8f0
 	github.com/pkg/errors v0.9.1
 	gopkg.in/guregu/null.v3 v3.5.0
 )

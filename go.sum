@@ -13,6 +13,8 @@ github.com/modern-go/reflect2 v1.0.2 h1:xBagoLtFs94CBntxluKeaWgTMpvLxC4ur3nMaC9G
 github.com/modern-go/reflect2 v1.0.2/go.mod h1:yWuevngMOJpCy52FWWMvUC8ws7m/LJsjYzDa0/r8luk=
 github.com/omniboost/go-omniboost-http-client v0.0.0-20250320145216-5cb035110f53 h1:uck2yYr1mx+/yhe40cw058Vkpw7E43GrFe6lRzrei98=
 github.com/omniboost/go-omniboost-http-client v0.0.0-20250320145216-5cb035110f53/go.mod h1:VPJvHx0v/Fe0AatmABPe9EbC7hCVMqaVDnztu/1e7MQ=
+github.com/omniboost/go-omniboost-http-client v0.0.0-20250321143618-7cf3b125e8f0 h1:k4KBjBD2LepKPibdIlOhn5RAbWP1UkEZth6WzwGygMA=
+github.com/omniboost/go-omniboost-http-client v0.0.0-20250321143618-7cf3b125e8f0/go.mod h1:VPJvHx0v/Fe0AatmABPe9EbC7hCVMqaVDnztu/1e7MQ=
 github.com/omniboost/schema v1.1.1-0.20191030093734-a170fe1a7240 h1:+yAcEWiT5FCKmD9HmerCkxSXRO/9uVQ88gQwvJbt6LA=
 github.com/omniboost/schema v1.1.1-0.20191030093734-a170fe1a7240/go.mod h1:9fjiXyATsFBndd1ZtrF4KJOs/VwBFmhX4N9yblkz+Jg=
 github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=

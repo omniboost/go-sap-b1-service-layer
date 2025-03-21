@@ -14,6 +14,7 @@ type (
 		client *SapB1Client
 
 		Select *odata.Select `query:"$select,omitempty"`
+		Filter *odata.Filter `query:"$filter,omitempty"`
 		Skip   odata.Skip    `query:"$skip,omitempty"`
 		Top    odata.Top     `query:"$top,omitempty"`
 	}
@@ -62,7 +63,7 @@ func (s *SapB1Client) NewItemGetAllRequest(opts ...ItemGetAllOption) *ItemGetAll
 func (i *ItemGetAllRequest) Do(ctx context.Context) (Items, error) {
 	items := make(Items, 0)
 
-	maxRequests := 2
+	maxRequests := 10_000
 	for {
 		var resp ItemGetAllResponse
 		err := i.client.Do(ctx, i, &resp)
