@@ -1311,3 +1311,17 @@ type AddressExtension struct {
 	U_GM_CodStrutturaS           string      `json:"U_GM_CodStrutturaS"`
 	U_GM_CodStrutturaB           interface{} `json:"U_GM_CodStrutturaB"`
 }
+
+type SimplifiedDeliveryNote struct {
+	DocDate       time.Time                `json:"DocDate"`
+	DocDueDate    *time.Time               `json:"DocDueDate,omitempty"`
+	CardCode      string                   `json:"CardCode"`
+	JournalMemo   string                   `json:"JournalMemo"`
+	DocumentLines []SimplifiedDocumentLine `json:"DocumentLines"`
+}
+
+type SimplifiedDocumentLine struct {
+	ItemCode      string  `json:"ItemCode"`
+	Quantity      float64 `json:"Quantity"`
+	WarehouseCode string  `json:"WarehouseCode"`
+}
