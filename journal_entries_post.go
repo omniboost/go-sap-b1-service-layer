@@ -109,7 +109,7 @@ func (r *JournalEntriesPostRequest) NewResponseBody() *JournalEntriesPostRespons
 	return &JournalEntriesPostResponseBody{}
 }
 
-type JournalEntriesPostResponseBody Invoice
+type JournalEntriesPostResponseBody JournalEntry
 
 func (r *JournalEntriesPostRequest) URL() *url.URL {
 	u := r.client.GetEndpointURL(*r.Path(), r.PathParams())

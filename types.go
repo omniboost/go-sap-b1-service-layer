@@ -528,7 +528,7 @@ type JournalEntryLine struct {
 	CostingCode                    string        `json:"CostingCode,omitempty"`
 	TaxDate                        Date          `json:"TaxDate,omitempty"`
 	BaseSum                        float64       `json:"BaseSum,omitempty"`
-	TaxGroup                       interface{}   `json:"TaxGroup,omitempty"`
+	TaxGroup                       string        `json:"TaxGroup,omitempty"`
 	DebitSys                       float64       `json:"DebitSys,omitempty"`
 	CreditSys                      float64       `json:"CreditSys,omitempty"`
 	VATDate                        Date          `json:"VatDate,omitempty"`
