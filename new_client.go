@@ -2,11 +2,12 @@ package sap
 
 import (
 	"errors"
-	"github.com/omniboost/go-omniboost-http-client/client"
 	"net/http"
 	"net/url"
 	"strconv"
 	"sync"
+
+	"github.com/omniboost/go-omniboost-http-client/client"
 )
 
 type (
@@ -55,10 +56,11 @@ func getSkip(nextLink string) (int, error) {
 		return 0, nil
 	}
 
-	q, err := url.ParseQuery(nextLink)
+	u, err := url.Parse(nextLink)
 	if err != nil {
 		return 0, err
 	}
+	q := u.Query()
 
 	skip := q.Get("$skip")
 	if skip == "" {
