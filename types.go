@@ -511,8 +511,8 @@ type JournalEntryLines []JournalEntryLine
 type JournalEntryLine struct {
 	LineID                         int           `json:"Line_ID,omitempty"`
 	AccountCode                    string        `json:"AccountCode,omitempty"`
-	Debit                          float64       `json:"Debit,omitempty"`
-	Credit                         float64       `json:"Credit,omitempty"`
+	Debit                          *float64      `json:"Debit,omitempty"`
+	Credit                         *float64      `json:"Credit,omitempty"`
 	FCDebit                        float64       `json:"FCDebit,omitempty"`
 	FCCredit                       float64       `json:"FCCredit,omitempty"`
 	FCCurrency                     interface{}   `json:"FCCurrency,omitempty"`
