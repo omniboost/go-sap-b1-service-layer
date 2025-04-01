@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"net/url"
 
+	"github.com/omniboost/go-sap-b1-service-layer/odata"
 	"github.com/omniboost/go-sap-b1-service-layer/utils"
 )
 
@@ -32,10 +33,20 @@ type ChartOfAccountsGetRequest struct {
 }
 
 func (r ChartOfAccountsGetRequest) NewQueryParams() *ChartOfAccountsGetRequestQueryParams {
-	return &ChartOfAccountsGetRequestQueryParams{}
+	selectFields, _ := utils.Fields(&Account{})
+	return &ChartOfAccountsGetRequestQueryParams{
+		Select: odata.NewSelect(selectFields),
+		Filter: odata.NewFilter(),
+		Top:    odata.NewTop(),
+		Skip:   odata.NewSkip(),
+	}
 }
 
 type ChartOfAccountsGetRequestQueryParams struct {
+	Select *odata.Select `schema:"$select,omitempty"`
+	Filter *odata.Filter `schema:"$filter,omitempty"`
+	Top    *odata.Top    `schema:"$top,omitempty"`
+	Skip   *odata.Skip   `schema:"$skip,omitempty"`
 }
 
 func (p ChartOfAccountsGetRequestQueryParams) ToURLValues() (url.Values, error) {
@@ -109,7 +120,11 @@ func (r *ChartOfAccountsGetRequest) NewResponseBody() *ChartOfAccountsGetRespons
 	return &ChartOfAccountsGetResponseBody{}
 }
 
-type ChartOfAccountsGetResponseBody struct{}
+type ChartOfAccountsGetResponseBody struct {
+	Context  string          `json:"odata.context"`
+	Value    ChartOfAccounts `json:"value"`
+	NextLink string          `json:"odata.nextLink"`
+}
 
 func (r *ChartOfAccountsGetRequest) URL() *url.URL {
 	u := r.client.GetEndpointURL(*r.Path(), r.PathParams())
@@ -137,4 +152,32 @@ func (r *ChartOfAccountsGetRequest) Do() (ChartOfAccountsGetResponseBody, error)
 	responseBody := r.NewResponseBody()
 	_, err = r.client.Do(req, responseBody)
 	return *responseBody, err
+}
+
+func (r *ChartOfAccountsGetRequest) All() (ChartOfAccountsGetResponseBody, error) {
+	chartOfAccounts := ChartOfAccountsGetResponseBody{}
+
+	for {
+		resp, err := r.Do()
+		if err != nil {
+			return chartOfAccounts, err
+		}
+
+		chartOfAccounts.Value = append(chartOfAccounts.Value, resp.Value...)
+
+		if resp.NextLink == "" {
+			break
+		}
+
+		skip, err := getSkip(resp.NextLink)
+		if err != nil {
+			return chartOfAccounts, err
+		}
+		if skip == 0 {
+			break
+		}
+		r.QueryParams().Skip.Set(skip)
+	}
+
+	return chartOfAccounts, nil
 }
