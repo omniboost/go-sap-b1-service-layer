@@ -449,6 +449,7 @@ type JournalEntry struct {
 	Memo                                    string            `json:"Memo,omitempty"`
 	Reference                               string            `json:"Reference,omitempty"`
 	Reference2                              string            `json:"Reference2,omitempty"`
+	Reference3                              string            `json:"Reference3,omitempty"`
 	TransactionCode                         interface{}       `json:"TransactionCode,omitempty"`
 	ProjectCode                             interface{}       `json:"ProjectCode,omitempty"`
 	TaxDate                                 Date              `json:"TaxDate,omitempty"`
@@ -481,7 +482,6 @@ type JournalEntry struct {
 	CertificationNumber                     interface{}       `json:"CertificationNumber,omitempty"`
 	PrivateKeyVersion                       interface{}       `json:"PrivateKeyVersion,omitempty"`
 	Corisptivi                              string            `json:"Corisptivi,omitempty"`
-	Reference3                              interface{}       `json:"Reference3,omitempty"`
 	DocumentType                            interface{}       `json:"DocumentType,omitempty"`
 	DeferredTax                             string            `json:"DeferredTax,omitempty"`
 	BlanketAgreementNumber                  interface{}       `json:"BlanketAgreementNumber,omitempty"`
