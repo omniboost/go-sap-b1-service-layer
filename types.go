@@ -1326,6 +1326,15 @@ type SimplifiedDocumentLine struct {
 	WarehouseCode string  `json:"WarehouseCode"`
 }
 
+type WarehouseStock struct {
+	U_WhsCode      string  `json:"U_WhsCode"`
+	U_CountingDate Date    `json:"U_CountingDate"`
+	U_ItemCode     string  `json:"U_ItemCode"`
+	U_POSQuantity  float64 `json:"U_POSQuantity"`
+	U_Price        float64 `json:"U_Price"`
+	U_Notes        string  `json:"U_Notes"`
+}
+
 type ChartOfAccounts []Account
 
 type Account struct {
