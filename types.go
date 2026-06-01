@@ -17,6 +17,8 @@ type BusinessPartner struct {
 	CardType     string `json:"CardType,omitempty"`
 }
 
+type BusinessPartners []BusinessPartner
+
 type Invoice struct {
 	DocDate         Date            `json:"DocDate,omitempty"`
 	DocDueDate      Date            `json:"DocDueDate,omitempty"`
