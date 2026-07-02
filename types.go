@@ -7,6 +7,7 @@ type BusinessPartner struct {
 	CardCode     string
 	CardName     string
 	FederalTaxID string
+	AdditionalID string
 	Phone1       string
 	Phone2       string
 	EmailAddress string
