@@ -1,6 +1,7 @@
 package sap_test
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"testing"
@@ -8,7 +9,7 @@ import (
 
 func TestMetadataGet(t *testing.T) {
 	req := client.NewMetadataGetRequest()
-	resp, err := req.Do()
+	resp, err := req.Do(context.Background())
 	if err != nil {
 		t.Error(err)
 	}

@@ -1,6 +1,7 @@
 package sap
 
 import (
+	"context"
 	"net/http"
 	"net/url"
 
@@ -116,14 +117,14 @@ func (r *BusinessPartnersPostRequest) URL() *url.URL {
 	return &u
 }
 
-func (r *BusinessPartnersPostRequest) Do() (BusinessPartnersPostResponseBody, error) {
+func (r *BusinessPartnersPostRequest) Do(ctx context.Context) (BusinessPartnersPostResponseBody, error) {
 	// Create http request
-	req, err := r.client.NewRequest(nil, r)
+	req, err := r.client.NewRequest(ctx, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}
 
-	err = r.client.InitSession(req)
+	err = r.client.InitSession(ctx, req)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}

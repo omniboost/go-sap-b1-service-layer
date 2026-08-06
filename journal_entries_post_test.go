@@ -1,6 +1,7 @@
 package sap_test
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"testing"
@@ -8,7 +9,7 @@ import (
 
 func TestJournalEntriesPost(t *testing.T) {
 	req := client.NewJournalEntriesPostRequest()
-	resp, err := req.Do()
+	resp, err := req.Do(context.Background())
 	if err != nil {
 		t.Error(err)
 	}

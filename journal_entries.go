@@ -1,6 +1,7 @@
 package sap
 
 import (
+	"context"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -137,14 +138,14 @@ func (r *JournalEntriesGetRequest) URL() *url.URL {
 	return &u
 }
 
-func (r *JournalEntriesGetRequest) Do() (JournalEntriesGetResponseBody, error) {
+func (r *JournalEntriesGetRequest) Do(ctx context.Context) (JournalEntriesGetResponseBody, error) {
 	// Create http request
-	req, err := r.client.NewRequest(nil, r)
+	req, err := r.client.NewRequest(ctx, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}
 
-	err = r.client.InitSession(req)
+	err = r.client.InitSession(ctx, req)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}
@@ -160,8 +161,8 @@ func (r *JournalEntriesGetRequest) Do() (JournalEntriesGetResponseBody, error) {
 	return *responseBody, err
 }
 
-func (r *JournalEntriesGetRequest) All() (JournalEntriesGetResponseBody, error) {
-	resp, err := r.Do()
+func (r *JournalEntriesGetRequest) All(ctx context.Context) (JournalEntriesGetResponseBody, error) {
+	resp, err := r.Do(ctx)
 	if err != nil {
 		return resp, err
 	}
@@ -181,7 +182,7 @@ func (r *JournalEntriesGetRequest) All() (JournalEntriesGetResponseBody, error) 
 		}
 
 		r.QueryParams().Skip.Set(skip)
-		resp, err = r.Do()
+		resp, err = r.Do(ctx)
 		if err != nil {
 			return resp, err
 		}

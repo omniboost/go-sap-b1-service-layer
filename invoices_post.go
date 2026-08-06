@@ -1,6 +1,7 @@
 package sap
 
 import (
+	"context"
 	"net/http"
 	"net/url"
 
@@ -116,14 +117,14 @@ func (r *InvoicesPostRequest) URL() *url.URL {
 	return &u
 }
 
-func (r *InvoicesPostRequest) Do() (InvoicesPostResponseBody, error) {
+func (r *InvoicesPostRequest) Do(ctx context.Context) (InvoicesPostResponseBody, error) {
 	// Create http request
-	req, err := r.client.NewRequest(nil, r)
+	req, err := r.client.NewRequest(ctx, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}
 
-	err = r.client.InitSession(req)
+	err = r.client.InitSession(ctx, req)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}

@@ -1,6 +1,7 @@
 package sap
 
 import (
+	"context"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -137,14 +138,14 @@ func (r *ItemsGetRequest) URL() *url.URL {
 	return &u
 }
 
-func (r *ItemsGetRequest) Do() (ItemsGetResponseBody, error) {
+func (r *ItemsGetRequest) Do(ctx context.Context) (ItemsGetResponseBody, error) {
 	// Create http request
-	req, err := r.client.NewRequest(nil, r)
+	req, err := r.client.NewRequest(ctx, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}
 
-	err = r.client.InitSession(req)
+	err = r.client.InitSession(ctx, req)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}
@@ -160,8 +161,8 @@ func (r *ItemsGetRequest) Do() (ItemsGetResponseBody, error) {
 	return *responseBody, err
 }
 
-func (r *ItemsGetRequest) All() (ItemsGetResponseBody, error) {
-	resp, err := r.Do()
+func (r *ItemsGetRequest) All(ctx context.Context) (ItemsGetResponseBody, error) {
+	resp, err := r.Do(ctx)
 	if err != nil {
 		return resp, err
 	}
@@ -181,7 +182,7 @@ func (r *ItemsGetRequest) All() (ItemsGetResponseBody, error) {
 		}
 
 		r.QueryParams().Skip.Set(skip)
-		resp, err = r.Do()
+		resp, err = r.Do(ctx)
 		if err != nil {
 			return resp, err
 		}

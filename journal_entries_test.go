@@ -1,6 +1,7 @@
 package sap_test
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"testing"
@@ -11,7 +12,7 @@ func TestJournalEntriesGet(t *testing.T) {
 	// req.QueryParams().Count.Set(20)
 	// req.QueryParams().Filter.Set("ItemCode eq '80304018'")
 	req.QueryParams().Filter.Set("contains(ReferenceDate,'2023')")
-	resp, err := req.Do()
+	resp, err := req.Do(context.Background())
 	if err != nil {
 		t.Error(err)
 	}

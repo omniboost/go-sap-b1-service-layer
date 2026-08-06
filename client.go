@@ -35,7 +35,7 @@ var (
 		Path:   "",
 	}
 
-///BusinessPartners
+// /BusinessPartners
 )
 
 // NewClient returns a new Exact Globe Client client
@@ -115,9 +115,9 @@ func (c *Client) SetCompanyDB(companyDB string) {
 	c.companyDB = companyDB
 }
 
-func (c *Client) InitSession(req *http.Request) error {
+func (c *Client) InitSession(ctx context.Context, req *http.Request) error {
 	if c.cookiejar == nil {
-		jar, err := c.FetchLoginCookies()
+		jar, err := c.FetchLoginCookies(ctx)
 		if err != nil {
 			return errors.WithStack(err)
 		}
@@ -127,7 +127,7 @@ func (c *Client) InitSession(req *http.Request) error {
 	return nil
 }
 
-func (c *Client) FetchLoginCookies() (cookiejar.Jar, error) {
+func (c *Client) FetchLoginCookies(ctx context.Context) (cookiejar.Jar, error) {
 	var err error
 
 	req := c.NewLoginPostRequest()
@@ -140,7 +140,7 @@ func (c *Client) FetchLoginCookies() (cookiejar.Jar, error) {
 	}
 
 	req.client.http.Jar = jar
-	_, err = req.Do()
+	_, err = req.Do(ctx)
 	if err != nil {
 		return cookiejar.Jar{}, errors.WithStack(err)
 	}

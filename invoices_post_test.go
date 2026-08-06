@@ -1,6 +1,7 @@
 package sap_test
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"testing"
@@ -8,7 +9,7 @@ import (
 
 func TestInvoicesPost(t *testing.T) {
 	req := client.NewInvoicesPostRequest()
-	resp, err := req.Do()
+	resp, err := req.Do(context.Background())
 	if err != nil {
 		t.Error(err)
 	}
