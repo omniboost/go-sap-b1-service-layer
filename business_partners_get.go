@@ -1,6 +1,7 @@
 package sap
 
 import (
+	"context"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -131,13 +132,13 @@ func (r *BusinessPartnersGetRequest) URL() *url.URL {
 	return &u
 }
 
-func (r *BusinessPartnersGetRequest) Do() (BusinessPartnersGetResponseBody, error) {
-	req, err := r.client.NewRequest(nil, r)
+func (r *BusinessPartnersGetRequest) Do(ctx context.Context) (BusinessPartnersGetResponseBody, error) {
+	req, err := r.client.NewRequest(ctx, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}
 
-	err = r.client.InitSession(req)
+	err = r.client.InitSession(ctx, req)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}
@@ -152,8 +153,8 @@ func (r *BusinessPartnersGetRequest) Do() (BusinessPartnersGetResponseBody, erro
 	return *responseBody, err
 }
 
-func (r *BusinessPartnersGetRequest) All() (BusinessPartnersGetResponseBody, error) {
-	resp, err := r.Do()
+func (r *BusinessPartnersGetRequest) All(ctx context.Context) (BusinessPartnersGetResponseBody, error) {
+	resp, err := r.Do(ctx)
 	if err != nil {
 		return resp, err
 	}
@@ -173,7 +174,7 @@ func (r *BusinessPartnersGetRequest) All() (BusinessPartnersGetResponseBody, err
 		}
 
 		r.QueryParams().Skip.Set(skip)
-		resp, err = r.Do()
+		resp, err = r.Do(ctx)
 		if err != nil {
 			return resp, err
 		}
