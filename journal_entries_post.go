@@ -24,6 +24,7 @@ func (c *Client) NewJournalEntriesPostRequest() JournalEntriesPostRequest {
 
 type JournalEntriesPostRequest struct {
 	client      *Client
+	baseURL     *url.URL
 	queryParams *JournalEntriesPostRequestQueryParams
 	path        string
 	pathParams  *JournalEntriesPostRequestPathParams
@@ -112,7 +113,16 @@ func (r *JournalEntriesPostRequest) NewResponseBody() *JournalEntriesPostRespons
 
 type JournalEntriesPostResponseBody JournalEntry
 
+func (r *JournalEntriesPostRequest) SetBaseURL(u url.URL) {
+	r.baseURL = &u
+}
+
 func (r *JournalEntriesPostRequest) URL() *url.URL {
+	if r.baseURL != nil {
+		u := r.client.GetEndpointURLWithBase(*r.baseURL, "/JournalEntries", r.PathParams())
+		return &u
+	}
+
 	u := r.client.GetEndpointURL(*r.Path(), r.PathParams())
 	return &u
 }
@@ -124,9 +134,13 @@ func (r *JournalEntriesPostRequest) Do(ctx context.Context) (JournalEntriesPostR
 		return *r.NewResponseBody(), err
 	}
 
-	err = r.client.InitSession(ctx, req)
-	if err != nil {
-		return *r.NewResponseBody(), err
+	if r.baseURL == nil {
+		err = r.client.InitSession(ctx, req)
+		if err != nil {
+			return *r.NewResponseBody(), err
+		}
+	} else {
+		req.SetBasicAuth(r.client.Username(), r.client.Password())
 	}
 
 	// Process query parameters

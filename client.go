@@ -200,8 +200,10 @@ func (c *Client) SetBeforeRequestDo(fun BeforeRequestDoCallback) {
 }
 
 func (c *Client) GetEndpointURL(p string, pathParams PathParams) url.URL {
-	clientURL := c.BaseURL()
+	return c.GetEndpointURLWithBase(c.BaseURL(), p, pathParams)
+}
 
+func (c *Client) GetEndpointURLWithBase(clientURL url.URL, p string, pathParams PathParams) url.URL {
 	parsed, err := url.Parse(p)
 	if err != nil {
 		log.Fatal(err)
