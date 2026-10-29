@@ -13,7 +13,7 @@ func (c *Client) NewWarehouseStockPostRequest() WarehouseStockPostRequest {
 		client:  c,
 		method:  http.MethodPost,
 		headers: http.Header{},
-		path:    "/b1s/v1/U_Z3_GM_ECO_WHSSTOCK",
+		path:    "/U_Z3_GM_ECO_WHSSTOCK",
 	}
 
 	r.queryParams = r.NewQueryParams()

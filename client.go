@@ -38,7 +38,9 @@ var (
 // /BusinessPartners
 )
 
-// NewClient returns a new Exact Globe Client client
+const defaultPathPrefix = "/b1s/v1"
+
+// NewClient returns a new sap b1 Client client
 func NewClient(httpClient *http.Client) *Client {
 	if httpClient == nil {
 		httpClient = http.DefaultClient
@@ -47,7 +49,10 @@ func NewClient(httpClient *http.Client) *Client {
 	client := &Client{}
 
 	client.SetHTTPClient(httpClient)
-	client.SetBaseURL(BaseURL)
+	baseURL := BaseURL
+	baseURL.Path = defaultPathPrefix
+	client.SetBaseURL(baseURL)
+	client.SetSessionLoginEnabled(true)
 	client.SetDebug(false)
 	client.SetUserAgent(userAgent)
 	client.SetMediaType(mediaType)
@@ -63,6 +68,8 @@ type Client struct {
 
 	debug   bool
 	baseURL url.URL
+
+	sessionLoginEnabled bool
 
 	// credentials
 	username  string
@@ -116,6 +123,10 @@ func (c *Client) SetCompanyDB(companyDB string) {
 }
 
 func (c *Client) InitSession(ctx context.Context, req *http.Request) error {
+	if !c.sessionLoginEnabled {
+		return nil
+	}
+
 	if c.cookiejar == nil {
 		jar, err := c.FetchLoginCookies(ctx)
 		if err != nil {
@@ -164,7 +175,18 @@ func (c Client) BaseURL() url.URL {
 }
 
 func (c *Client) SetBaseURL(baseURL url.URL) {
+	if baseURL.Path == "" || baseURL.Path == "/" {
+		baseURL.Path = defaultPathPrefix
+	}
 	c.baseURL = baseURL
+}
+
+func (c Client) SessionLoginEnabled() bool {
+	return c.sessionLoginEnabled
+}
+
+func (c *Client) SetSessionLoginEnabled(enabled bool) {
+	c.sessionLoginEnabled = enabled
 }
 
 func (c *Client) SetMediaType(mediaType string) {
@@ -200,10 +222,8 @@ func (c *Client) SetBeforeRequestDo(fun BeforeRequestDoCallback) {
 }
 
 func (c *Client) GetEndpointURL(p string, pathParams PathParams) url.URL {
-	return c.GetEndpointURLWithBase(c.BaseURL(), p, pathParams)
-}
+	clientURL := c.BaseURL()
 
-func (c *Client) GetEndpointURLWithBase(clientURL url.URL, p string, pathParams PathParams) url.URL {
 	parsed, err := url.Parse(p)
 	if err != nil {
 		log.Fatal(err)

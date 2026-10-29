@@ -13,7 +13,7 @@ func (c *Client) NewLoginPostRequest() LoginPostRequest {
 		client:  c,
 		method:  http.MethodPost,
 		headers: http.Header{},
-		path:    "/b1s/v1/Login",
+		path:    "/Login",
 	}
 
 	r.queryParams = r.NewQueryParams()

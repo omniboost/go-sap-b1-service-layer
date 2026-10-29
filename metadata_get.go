@@ -13,7 +13,7 @@ func (c *Client) NewMetadataGetRequest() MetadataGetRequest {
 		client:  c,
 		method:  http.MethodGet,
 		headers: http.Header{},
-		path:    "/b1s/v1/$metadata",
+		path:    "/$metadata",
 	}
 
 	r.queryParams = r.NewQueryParams()

@@ -15,7 +15,7 @@ func (c *Client) NewJournalEntriesGetRequest() JournalEntriesGetRequest {
 		client:  c,
 		method:  http.MethodGet,
 		headers: http.Header{},
-		path:    "/b1s/v1/JournalEntries",
+		path:    "/JournalEntries",
 	}
 
 	r.queryParams = r.NewQueryParams()
@@ -26,7 +26,6 @@ func (c *Client) NewJournalEntriesGetRequest() JournalEntriesGetRequest {
 
 type JournalEntriesGetRequest struct {
 	client      *Client
-	baseURL     *url.URL
 	queryParams *JournalEntriesGetRequestQueryParams
 	path        string
 	pathParams  *JournalEntriesGetRequestPathParams
@@ -134,16 +133,7 @@ type JournalEntriesGetResponseBody struct {
 	OdataNextLink string         `json:"odata.nextLink"`
 }
 
-func (r *JournalEntriesGetRequest) SetBaseURL(u url.URL) {
-	r.baseURL = &u
-}
-
 func (r *JournalEntriesGetRequest) URL() *url.URL {
-	if r.baseURL != nil {
-		u := r.client.GetEndpointURLWithBase(*r.baseURL, "/JournalEntries", r.PathParams())
-		return &u
-	}
-
 	u := r.client.GetEndpointURL(*r.Path(), r.PathParams())
 	return &u
 }
@@ -155,13 +145,9 @@ func (r *JournalEntriesGetRequest) Do(ctx context.Context) (JournalEntriesGetRes
 		return *r.NewResponseBody(), err
 	}
 
-	if r.baseURL == nil {
-		err = r.client.InitSession(ctx, req)
-		if err != nil {
-			return *r.NewResponseBody(), err
-		}
-	} else {
-		req.SetBasicAuth(r.client.Username(), r.client.Password())
+	err = r.client.InitSession(ctx, req)
+	if err != nil {
+		return *r.NewResponseBody(), err
 	}
 
 	// Process query parameters

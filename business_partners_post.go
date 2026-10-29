@@ -13,7 +13,7 @@ func (c *Client) NewBusinessPartnersPostRequest() BusinessPartnersPostRequest {
 		client:  c,
 		method:  http.MethodPost,
 		headers: http.Header{},
-		path:    "/b1s/v1/BusinessPartners",
+		path:    "/BusinessPartners",
 	}
 
 	r.queryParams = r.NewQueryParams()

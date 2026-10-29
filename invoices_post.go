@@ -13,7 +13,7 @@ func (c *Client) NewInvoicesPostRequest() InvoicesPostRequest {
 		client:  c,
 		method:  http.MethodPost,
 		headers: http.Header{},
-		path:    "/b1s/v1/Invoices",
+		path:    "/Invoices",
 	}
 
 	r.queryParams = r.NewQueryParams()

@@ -15,7 +15,7 @@ func (c *Client) NewItemsGetRequest() ItemsGetRequest {
 		client:  c,
 		method:  http.MethodGet,
 		headers: http.Header{},
-		path:    "/b1s/v1/Items",
+		path:    "/Items",
 	}
 
 	r.queryParams = r.NewQueryParams()

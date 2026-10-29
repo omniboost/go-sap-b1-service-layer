@@ -15,7 +15,7 @@ func (c *Client) NewBusinessPartnersGetRequest() BusinessPartnersGetRequest {
 		client:  c,
 		method:  http.MethodGet,
 		headers: http.Header{},
-		path:    "/b1s/v1/BusinessPartners",
+		path:    "/BusinessPartners",
 	}
 
 	r.queryParams = r.NewQueryParams()

@@ -14,7 +14,7 @@ func (c *Client) NewChartOfAccountsGetRequest() ChartOfAccountsGetRequest {
 		client:  c,
 		method:  http.MethodGet,
 		headers: http.Header{},
-		path:    "/b1s/v1/ChartOfAccounts",
+		path:    "/ChartOfAccounts",
 	}
 
 	r.queryParams = r.NewQueryParams()
