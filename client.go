@@ -38,8 +38,6 @@ var (
 // /BusinessPartners
 )
 
-const defaultPathPrefix = "/b1s/v1"
-
 // NewClient returns a new sap b1 Client client
 func NewClient(httpClient *http.Client) *Client {
 	if httpClient == nil {
@@ -49,9 +47,7 @@ func NewClient(httpClient *http.Client) *Client {
 	client := &Client{}
 
 	client.SetHTTPClient(httpClient)
-	baseURL := BaseURL
-	baseURL.Path = defaultPathPrefix
-	client.SetBaseURL(baseURL)
+	client.SetBaseURL(BaseURL)
 	client.SetSessionLoginEnabled(true)
 	client.SetDebug(false)
 	client.SetUserAgent(userAgent)
@@ -175,9 +171,6 @@ func (c Client) BaseURL() url.URL {
 }
 
 func (c *Client) SetBaseURL(baseURL url.URL) {
-	if baseURL.Path == "" || baseURL.Path == "/" {
-		baseURL.Path = defaultPathPrefix
-	}
 	c.baseURL = baseURL
 }
 
